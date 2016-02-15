@@ -9,7 +9,8 @@ from copy import copy
 #             'F(b)',
 #             'M(c,b)',
 #             'G(b)']
-expressao = '(exists(u) forall(w) forall(x) exists(y) forall(z))(P(x) and Q(w,y,z) and R(u))'
+# expressao = '(exists(u) forall(w) forall(x) exists(y) forall(z))(P(x) and Q(w,y,z) and R(u))'
+expressao = '(forall(x) forall(y) exists(u) forall(z) exists(w))(P(u,x) and P(z,y) and R(w))'
 
 constantes = ['a', 'b', 'c', 'd', 'e']
 funcoes = ['f', 'g', 'h', 'i']
@@ -178,7 +179,7 @@ def skolemizacao(expressao):
             func = constantes[j]
             j += 1
         premissa = premissa.replace(key, func)
-    print premissa
+    return premissa
 
 
 
