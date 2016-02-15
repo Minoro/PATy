@@ -1,7 +1,10 @@
 #-*- coding:utf-8 -*-
 from copy import copy
 
-# clausulas =['P(f(a),x,y,z) or P(x,y,z,w)']
+# Skolemizacao
+# clausulas =['P(a,x,y,z) or P(x,y,z,w)']
+
+#Exemplo Livro
 # expressao =['C(a)',
 #             '~F(y) or L(a,y)',
 #             '~C(x) or ~F(y) or ~G(y) or ~L(x,y)',
@@ -10,16 +13,17 @@ from copy import copy
 #             'M(c,b)',
 #             'G(b)']
 
+
 # expressao = ['~P(x) or Q(x,b)', 'P(a) or Q(a,b)']
 
 # expressao = '(exists(u) forall(w) forall(x) exists(y) forall(z))(P(x) or Q(w,y,z) or R(u))'
 # expressao = '(forall(x) forall(y) exists(u) forall(z) exists(w))(P(u,x) and P(z,y) and R(w))'
 
-#Do Coppin
-expressao = ['(exists(x) forall(y))(C(x) and ~F(y) or L(x,y))',
-                '(forall(x) forall(y))(~C(x) or ~F(y) or ~G(y) or ~L(x,y))',
-                '(forall(x) forall(y))(~F(x) or ~M(c,x) or ~C(y) or ~L(y,x))',
-                '(exists(x))(F(x) and M(c,x) and G(x))']
+#Exemplo Livro
+# expressao = ['(exists(x) forall(y))(C(x) and ~F(y) or L(x,y))',
+#                 '(forall(x) forall(y))(~C(x) or ~F(y) or ~G(y) or ~L(x,y))',
+#                 '(forall(x) forall(y))(~F(x) or ~M(c,x) or ~C(y) or ~L(y,x))',
+#                 '(exists(x))(F(x) and M(c,x) and G(x))']
 
 #EXERCICIO DO SLIDE
 # expressao = ['(forall(x))(~C(x) or W(x) and ~C(x) or R(x))',
@@ -34,6 +38,14 @@ expressao = ['(exists(x) forall(y))(C(x) and ~F(y) or L(x,y))',
 #              '()(~C(x) or ~D(x))',
 #              '()(~A(x) or ~C(x))',
 #              '()(B(x) and D(x))']
+
+# Exemplo refutacao livro
+expressao = ['()(~A(x) or B(x))',
+             '()(~B(x) or C(x))',
+             '()(~C(x) or D(x))',
+             '()(~D(x) or E(x) or F(x))',
+             '()(A(x))',
+             '()(~F(x))']
 
 constantes = ['a', 'b', 'c', 'd', 'e']
 funcoes = ['f', 'g', 'h', 'i']
