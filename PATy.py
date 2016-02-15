@@ -90,6 +90,20 @@ def refutacao(clausulas, conclusao):
         return True
     return False
 
+def refutacao(cls):
+
+    premissas = copy(cls)
+    for premissa in cls:
+        find = nega(premissa)
+        if(find in premissas):
+            premissas.remove(premissa)
+            premissas.remove(find)
+
+    print premissas
+    if len(premissas) == 0:
+        return True
+    return False
+
 def unificacao(clausulas):
 
     fila = copy(clausulas)
@@ -127,19 +141,6 @@ def unificacao(clausulas):
 
     return list(set(fila))
 
-def refutacao(cls):
-
-    premissas = copy(cls)
-    for premissa in cls:
-        find = nega(premissa)
-        if(find in premissas):
-            premissas.remove(premissa)
-            premissas.remove(find)
-
-    print premissas
-    if len(premissas) == 0:
-        return True
-    return False
 
 
 
