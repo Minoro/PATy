@@ -36,6 +36,13 @@ def to_cnf(clausulas):
 
     return cnf
 
+def aglutinar(clausulas):
+    fila = []
+    for clasula in clausulas:
+        for c in clasula:
+            fila.append(c)
+    return fila
+
 def nega(clausula):
 
     if clausula.startswith('~'):
@@ -85,11 +92,7 @@ def refutacao(clausulas, conclusao):
 
 def unificacao(clausulas):
 
-    fila = []
-    for clasula in clausulas:
-        for c in clasula:
-            fila.append(c)
-
+    fila = copy(clausulas)
     for i,c in enumerate(fila):
         if c.startswith('~'):
             func = c[1]
@@ -139,12 +142,7 @@ def refutacao(cls):
     return False
 
 
-print clausulas
-clausulas = to_cnf(clausulas)
-print clausulas
-clausulas = unificacao(clausulas)
-print clausulas
-print refutacao(clausulas)
+
 
 # c = ['~A(a)', 'F(x,y)']
 # print refutacao(clausulas, c)
