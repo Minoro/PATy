@@ -2,17 +2,18 @@
 from copy import copy
 
 # clausulas =['P(f(a),x,y,z) or P(x,y,z,w)']
-clausulas =['C(a)',
-            '~F(y) or L(a,y)',
-            '~C(x) or ~F(y) or ~G(y) or ~L(x,y)',
-            '~F(x) or ~M(c,x) or ~C(y) or L(y,x)',
-            'F(b)',
-            'M(c,b)',
-            'G(b)']
+# clausulas =['C(a)',
+#             '~F(y) or L(a,y)',
+#             '~C(x) or ~F(y) or ~G(y) or ~L(x,y)',
+#             '~F(x) or ~M(c,x) or ~C(y) or L(y,x)',
+#             'F(b)',
+#             'M(c,b)',
+#             'G(b)']
+expressao = '(exists(u) forall(w) forall(x) exists(y) forall(z))(P(x) and Q(w,y,z) and R(u))'
 
-
-constantes = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
-variaveis = ['w','x', 'y', 'z']
+constantes = ['a', 'b', 'c', 'd', 'e']
+funcoes = ['f', 'g', 'h', 'i']
+variaveis = ['u','w','x', 'y', 'z']
 
 
 def to_cnf(clausulas):
@@ -141,10 +142,61 @@ def unificacao(clausulas):
 
     return list(set(fila))
 
+def skolemizacao(expressao):
+    index = split_quantificadores(expressao)
+    quantificadores = expressao[:index]
+    premissa = expressao[index:]
+
+    if quantificadores.startswith('('):
+        quantificadores = quantificadores[1:-1]
+
+    quantificadores = quantificadores.split(' ')
+
+    fila_forall = []
+    fila = {}
+    for q in quantificadores:
+        var = q[q.find('(')+1 : q.find(')')]
+
+        if 'forall' in q:
+            fila_forall.append(var)
+        elif 'exists' in q:
+            fila[var] = copy(fila_forall)
+
+    i = 0 #indice para funções
+    j = 0 #indice para constantes
+    for key in fila:
+        qnt = fila[key]
+        if(len(qnt) > 0):
+            func = funcoes[i]+'('
+            for f in qnt:
+                func += f
+                if(f != qnt[-1]):
+                    func += ','
+            func += ')'
+            i += 1
+        else:
+            func = constantes[j]
+            j += 1
+        premissa = premissa.replace(key, func)
+    print premissa
 
 
 
+def split_quantificadores(expressao):
+    count = 0
+    index = 0
+    for letra in expressao:
+        if letra == '(':
+            count += 1
+        elif letra == ')':
+            count -= 1
+        index += 1
+        if count == 0:
+            return index
+    return -1
 
+print expressao
+skolemizacao(expressao)
 # c = ['~A(a)', 'F(x,y)']
 # print refutacao(clausulas, c)
 
