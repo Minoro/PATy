@@ -1,10 +1,19 @@
 #-*- coding:utf-8 -*-
 from copy import copy
 
-# clausulas =['A or B', '~A or C', '~B or C']
-clausulas =['~A(x) or B(x,y)', '~B(x,y) or C(x)', '~C(x) or D(x,y)', '~D(x,y) or E(x) or F(x,y)']
+# clausulas =['P(f(a),x,y,z) or P(x,y,z,w)']
+clausulas =['C(a)',
+            '~F(y) or L(a,y)',
+            '~C(x) or ~F(y) or ~G(y) or ~L(x,y)',
+            '~F(x) or ~M(c,x) or ~C(y) or L(y,x)',
+            'F(b)',
+            'M(c,b)',
+            'G(b)']
 
-operadores = ['or', 'and']
+
+constantes = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
+variaveis = ['w','x', 'y', 'z']
+
 
 def to_cnf(clausulas):
     '''
@@ -60,6 +69,8 @@ def resolucao(cls):
 
     return current
 
+
+
 def refutacao(clausulas, conclusao):
     p = copy(clausulas)
     for c in conclusao:
@@ -72,8 +83,69 @@ def refutacao(clausulas, conclusao):
         return True
     return False
 
+def unificacao(clausulas):
+
+    fila = []
+    for clasula in clausulas:
+        for c in clasula:
+            fila.append(c)
+
+    for i,c in enumerate(fila):
+        if c.startswith('~'):
+            func = c[1]
+        else:
+            func = c[0]
+
+        args = c[c.find(func)+2:c.rfind(')')]
+
+        j = i+1
+        while j < len(fila):
+            if(func in fila[j]):
+                args_func = fila[j][fila[j].find(func)+2:fila[j].rfind(')')]
+
+                args.split(',')
+                args_func.split(',')
+
+                for x, y in zip(args, args_func):
+                    if x == y:
+                        continue
+
+                    if x in constantes:
+                        key = x
+                        fetch = y
+                    else:
+                        key = y
+                        fetch = x
+
+                    for it, clasula in enumerate(fila):
+                        fila[it] = fila[it].replace(key, fetch)
+
+            j += 1
+
+    return list(set(fila))
+
+def refutacao(cls):
+
+    premissas = copy(cls)
+    for premissa in cls:
+        find = nega(premissa)
+        if(find in premissas):
+            premissas.remove(premissa)
+            premissas.remove(find)
+
+    print premissas
+    if len(premissas) == 0:
+        return True
+    return False
+
+
 print clausulas
 clausulas = to_cnf(clausulas)
-print  clausulas
-c = ['~A(x)', 'F(x,y)']
-print refutacao(clausulas, c)
+print clausulas
+clausulas = unificacao(clausulas)
+print clausulas
+print refutacao(clausulas)
+
+# c = ['~A(a)', 'F(x,y)']
+# print refutacao(clausulas, c)
+
